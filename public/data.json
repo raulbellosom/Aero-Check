@@ -1,0 +1,45 @@
+{
+  "users": [
+    { "id": 1, "name": "Sarahí Enriquez Pastrano" },
+    { "id": 2, "name": "Marco Rodrigo Ramirez Rojas" },
+    { "id": 3, "name": "Esteban Uziel Martinez Yerena" },
+    { "id": 4, "name": "Raul Pineda Trujillo" },
+    { "id": 5, "name": "Samuel Lagunes" },
+    { "id": 6, "name": "Rocio de la Torre de la Mora" }
+  ],
+  "companies": [
+    { "id": 1, "name": "Menzies Aviation", "contracts": [1, 2] },
+    { "id": 2, "name": "Swissport", "contracts": [3] },
+    { "id": 3, "name": "AVEXPRESS", "contracts": [2, 3] }
+  ],
+  "contracts": [
+    {
+      "id": 1,
+      "name": "Contrato 1",
+      "companyId": 1,
+      "image": "url1.jpg",
+      "questions": [1, 2]
+    },
+    {
+      "id": 2,
+      "name": "Contrato 2",
+      "companyId": 1,
+      "image": "url1.jpg",
+      "questions": [3]
+    },
+    {
+      "id": 3,
+      "name": "Contrato 3",
+      "companyId": 2,
+      "image": "url1.jpg",
+      "questions": [4, 5]
+    }
+  ],
+  "questions": [
+    { "id": 1, "text": "¿Cumple con los tiempos establecidos?" },
+    { "id": 2, "text": "¿Los servicios son eficientes?" },
+    { "id": 3, "text": "¿Se respetan las condiciones del contrato?" },
+    { "id": 4, "text": "¿El personal es capacitado?" },
+    { "id": 5, "text": "¿Los equipos están en buenas condiciones?" }
+  ]
+}
