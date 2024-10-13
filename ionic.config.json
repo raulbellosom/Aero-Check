@@ -1,0 +1,7 @@
+{
+  "name": "aero-check",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
