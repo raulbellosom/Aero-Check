@@ -7,6 +7,7 @@ import { Storage } from "@ionic/storage";
 import SelectUserAndCompany from "./pages/SelectUserAndCompany";
 import SelectContract from "./pages/SelectContract";
 import ContractQuestions from "./pages/ContractQuestions";
+import WelcomePage from "./pages/WelcomePage";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -54,6 +55,7 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
+          <Route exact path="/" component={WelcomePage} />
           <Route path="/select-user" component={SelectUserAndCompany} exact />
           <Route path="/select-contract" component={SelectContract} exact />
           <Route
@@ -61,7 +63,7 @@ const App: React.FC = () => {
             component={ContractQuestions}
             exact
           />
-          <Redirect exact from="/" to="/select-user" />
+          <Redirect exact to="/" />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

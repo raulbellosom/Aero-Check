@@ -9,6 +9,10 @@ import {
   IonSelectOption,
   IonButton,
   IonImg,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonText,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 
@@ -16,6 +20,7 @@ const SelectContract: React.FC = () => {
   const [data, setData] = useState<any>(null);
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const [selectedContract, setSelectedContract] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const history = useHistory();
 
   useEffect(() => {
@@ -46,7 +51,13 @@ const SelectContract: React.FC = () => {
     if (selectedContract) {
       localStorage.setItem("selectedContract", String(selectedContract));
       history.push("/contract-questions");
+    } else {
+      setError("Por favor selecciona un contrato.");
     }
+  };
+
+  const handleBack = () => {
+    history.goBack();
   };
 
   if (!data || !selectedCompany) {
@@ -65,21 +76,57 @@ const SelectContract: React.FC = () => {
           <IonTitle>Seleccionar Contrato</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <IonSelect
-          placeholder="Seleccionar Contrato"
-          onIonChange={(e) => setSelectedContract(e.detail.value)}
-        >
-          {contracts.map((contract: any) => (
-            <IonSelectOption key={contract.id} value={contract.id}>
-              {contract.name}
-            </IonSelectOption>
-          ))}
-        </IonSelect>
+      <IonContent className="ion-padding">
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <IonSelect
+                placeholder="Seleccionar Contrato"
+                onIonChange={(e) => {
+                  setSelectedContract(e.detail.value);
+                  setError(null); // Limpiar el error al seleccionar un contrato
+                }}
+              >
+                {contracts.map((contract: any) => (
+                  <IonSelectOption key={contract.id} value={contract.id}>
+                    {contract.name}
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonCol>
+          </IonRow>
 
-        <IonImg src={`path/to/contract_image_${selectedContract}.jpg`} />
+          <IonRow>
+            <IonCol>
+              {selectedContract && (
+                <IonImg
+                  src={`path/to/contract_image_${selectedContract}.jpg`}
+                />
+              )}
+            </IonCol>
+          </IonRow>
 
-        <IonButton onClick={handleNext}>Siguiente</IonButton>
+          {error && (
+            <IonRow>
+              <IonCol>
+                <IonText color="danger">{error}</IonText>
+              </IonCol>
+            </IonRow>
+          )}
+
+          <IonRow>
+            <IonCol>
+              <IonButton expand="block" onClick={handleBack} color="medium">
+                Atrás
+              </IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton expand="block" onClick={handleNext}>
+                Siguiente
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );

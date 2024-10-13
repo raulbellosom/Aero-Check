@@ -10,12 +10,19 @@ import {
   IonSelect,
   IonSelectOption,
   IonButton,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonText,
 } from "@ionic/react";
+import { useHistory } from "react-router-dom"; // Importa useHistory
 
 const ContractQuestions: React.FC = () => {
   const [data, setData] = useState<any>(null);
   const [questions, setQuestions] = useState<any[]>([]);
   const [responses, setResponses] = useState<any>({});
+  const [error, setError] = useState<string | null>(null);
+  const history = useHistory(); // Crea el history
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,13 +60,18 @@ const ContractQuestions: React.FC = () => {
   }, [data]);
 
   const handleResponseChange = (questionId: number, value: string) => {
-    setResponses((prev: string) => ({
+    setResponses((prev: any) => ({
       ...responses,
       [questionId]: value,
     }));
+    setError(null); // Limpiar el mensaje de error si el usuario selecciona una respuesta
   };
 
   const handleSubmit = () => {
+    if (questions.length !== Object.keys(responses).length) {
+      setError("Por favor responde todas las preguntas antes de enviar.");
+      return;
+    }
     console.log("Respuestas:", responses);
   };
 
@@ -74,23 +86,63 @@ const ContractQuestions: React.FC = () => {
           <IonTitle>Preguntas del Contrato</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        {questions.map((question) => (
-          <IonItem key={question.id}>
-            <IonLabel>{question.text}</IonLabel>
-            <IonSelect
-              placeholder="Seleccionar respuesta"
-              onIonChange={(e) =>
-                handleResponseChange(question.id, e.detail.value)
-              }
-            >
-              <IonSelectOption value="SI">SI</IonSelectOption>
-              <IonSelectOption value="NO">NO</IonSelectOption>
-              <IonSelectOption value="NO APLICA">NO APLICA</IonSelectOption>
-            </IonSelect>
-          </IonItem>
-        ))}
-        <IonButton onClick={handleSubmit}>Enviar Respuestas</IonButton>
+      <IonContent className="ion-padding">
+        <IonGrid>
+          {questions.map((question) => (
+            <IonRow key={question.id}>
+              <IonCol>
+                <IonItem>
+                  <IonLabel>{question.text}</IonLabel>
+                  <IonSelect
+                    placeholder="Seleccionar respuesta"
+                    onIonChange={(e) =>
+                      handleResponseChange(question.id, e.detail.value)
+                    }
+                  >
+                    <IonSelectOption value="SI">SI</IonSelectOption>
+                    <IonSelectOption value="NO">NO</IonSelectOption>
+                    <IonSelectOption value="NO APLICA">
+                      NO APLICA
+                    </IonSelectOption>
+                  </IonSelect>
+                </IonItem>
+              </IonCol>
+            </IonRow>
+          ))}
+
+          {error && (
+            <IonRow>
+              <IonCol>
+                <IonText color="danger">{error}</IonText>
+              </IonCol>
+            </IonRow>
+          )}
+
+          {/* Botón para regresar al paso anterior */}
+          <IonRow>
+            <IonCol>
+              <IonButton
+                expand="block"
+                color="medium"
+                onClick={() => history.goBack()}
+              >
+                Regresar
+              </IonButton>
+            </IonCol>
+          </IonRow>
+
+          <IonRow>
+            <IonCol>
+              <IonButton
+                expand="block"
+                onClick={handleSubmit}
+                disabled={questions.length !== Object.keys(responses).length}
+              >
+                Enviar Respuestas
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );
